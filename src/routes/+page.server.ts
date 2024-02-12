@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
+import { PUBLIC_BASE_URL } from '$env/static/public'
 
 export const load: PageServerLoad = async ({ url, locals: { getSession } }) => {
     const session = await getSession()
@@ -20,7 +21,7 @@ export const actions = {
         const { data, authError } = await supabase.auth.signInWithOtp({
             email: formData.get("email"),
             options: {
-                emailRedirectTo: 'http://localhost:5173'
+                emailRedirectTo: PUBLIC_BASE_URL
             }
         })
 
