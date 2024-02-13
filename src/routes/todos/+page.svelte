@@ -36,10 +36,10 @@
 
 		loading = true;
 
-		return async ({ update }) => {
+		return async ({ update, result, formElement }) => {
 			toast.success('TODO created!');
-			await update();
 			loading = false;
+			await update();
 		};
 	};
 
@@ -63,8 +63,8 @@
 		loading = true;
 
 		return async ({ update }) => {
-			await update();
 			loading = false;
+			await update();
 		};
 	};
 
@@ -75,7 +75,7 @@
 		}
 	};
 
-	$: if (profile.avatar_url) downloadImage(profile.avatar_url);
+	$: if (profile?.avatar_url) downloadImage(profile.avatar_url);
 </script>
 
 <svelte:head>
@@ -97,9 +97,9 @@
 				name="content"
 				placeholder="Add New Todo"
 				disabled={loading}
-				autofocus
 				required
 				minlength="2"
+				autofocus
 				class="flex-1 border rounded-md p-2 dark:bg-slate-800"
 			/>
 		</form>
