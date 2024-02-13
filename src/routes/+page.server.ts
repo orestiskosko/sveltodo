@@ -1,6 +1,5 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import { PUBLIC_BASE_URL } from '$env/static/public'
 
 export const load: PageServerLoad = async ({ url, locals: { getSession } }) => {
     const session = await getSession()
@@ -14,22 +13,19 @@ export const load: PageServerLoad = async ({ url, locals: { getSession } }) => {
 }
 
 export const actions = {
-    login: async ({ request, locals: { supabase } }) => {
+    login: async ({ url, request, locals: { supabase } }) => {
         const formData = await request.formData();
-        console.log(formData.get("email"));
 
         const { data, authError } = await supabase.auth.signInWithOtp({
             email: formData.get("email"),
             options: {
-                emailRedirectTo: PUBLIC_BASE_URL
+                emailRedirectTo: `${url.origin}/auth/callback`
             }
         })
 
         if (authError) {
             error(authError.status, authError);
         }
-
-        console.log(data);
 
         return data;
     }
